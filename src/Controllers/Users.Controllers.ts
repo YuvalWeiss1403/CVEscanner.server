@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { UsersModel } from "../Models/Users.Models";
 import { createUser, getAllUsersData } from "../Services/Users.Services";
 import { Request, Response } from "express";
@@ -33,6 +34,7 @@ export const newUser = async (req: Request, res: Response) => {
 		}
 		const encryptedPassword = await bcrypt.hash(password, 10);
 		const user = await UsersModel.create({
+			_id: new mongoose.Types.ObjectId(),
 			firstName,
 			lastName,
 			email: email.toLowerCase(), // sanitize: convert email to lowercase

@@ -1,19 +1,21 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 export interface IUsers {
 	_id?: ObjectId;
-	name: string;
+	firstName: string;
+	lastName: string;
 	email: string;
 	password: string;
 	token?: string;
-	isAdmin: boolean;
+	isAdmin?: boolean;
 }
 
 export const usersSchema = new Schema<IUsers>({
 	_id: { type: Schema.Types.ObjectId, required: false },
-	name: { type: String, required: true },
+	firstName: { type: String, required: true },
+	lastName: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
 	token: { type: String, required: false },
-	isAdmin: { type: Boolean, required: true },
+	isAdmin: { type: Boolean, required: false, default: false },
 });
 export const UsersModel = mongoose.model<IUsers>("users", usersSchema);
