@@ -4,6 +4,8 @@ import { createUser, getAllUsersData } from "../Services/Users.Services";
 import { Request, Response } from "express";
 let bcrypt = require("bcrypt");
 import jwt from "jsonwebtoken";
+import { CompaniesModel } from "../Models/Companies.Models";
+import { createCompany } from "../Services/Companies.Services";
 const tokenKey = process.env.TOKEN_KEY || "default_value";
 
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -17,8 +19,8 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const newUser = async (req: Request, res: Response) => {
 	try {
-		const { firstName, lastName, email, password } = req.body;
-		if (!(firstName && lastName && email && password)) {
+		const { firstName, lastName, email, password, companyName } = req.body;
+		if (!(firstName && lastName && email && password && companyName)) {
 			return res.status(400).send("All input is required");
 		}
 		if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
@@ -29,6 +31,7 @@ export const newUser = async (req: Request, res: Response) => {
 				);
 		}
 		const oldUser = await UsersModel.findOne({ email });
+
 		if (oldUser) {
 			return res.status(409).send("User Already Exist. Please Login");
 		}
@@ -39,6 +42,7 @@ export const newUser = async (req: Request, res: Response) => {
 			lastName,
 			email: email.toLowerCase(), // sanitize: convert email to lowercase
 			password: encryptedPassword,
+			CompanyName: companyName,
 		});
 		const token = jwt.sign({ user_id: user._id, email }, tokenKey, {
 			expiresIn: "2h",
