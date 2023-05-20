@@ -7,7 +7,7 @@ export interface IUsers {
 	password: string;
 	token?: string;
 	isAdmin?: boolean;
-	CompanyName: string;
+	companyName: string;
 }
 
 export const usersSchema = new Schema<IUsers>({
@@ -18,6 +18,6 @@ export const usersSchema = new Schema<IUsers>({
 	password: { type: String, required: true },
 	token: { type: String, required: false },
 	isAdmin: { type: Boolean, required: false, default: false },
-	CompanyName: { type: String, required: true },
+	companyName: { type: String, required: true },
 });
 export const UsersModel = mongoose.model<IUsers>("users", usersSchema);
