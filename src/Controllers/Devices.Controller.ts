@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Request, Response } from "express";
 import { DevicesModel } from "../Models/Devices.Models";
 import { createDevice, getAllDevicesData } from "../Services/Devices.Services";
+import { CompaniesModel } from "../Models/Companies.Models";
 
 export const getAllDevices = async (req: Request, res: Response) => {
 	try {
@@ -20,11 +21,7 @@ export const newDevice = async (req: Request, res: Response) => {
 		if (OldDevice) {
 			return res.status(409).send("Device Already Exist. Please enter again");
 		}
-		const OldCompany = await DevicesModel.findOne({ companyName });
-
-		if (!OldCompany) {
-			return res.status(409).send("company does not Exist. Please enter again");
-		}
+		const OldCompany = await CompaniesModel.findOne({ companyName });
 
 		const device = await DevicesModel.create({
 			_id: new mongoose.Types.ObjectId(),
@@ -33,7 +30,7 @@ export const newDevice = async (req: Request, res: Response) => {
 			PatchHistory: patchHistory,
 			year: year,
 			Type: type,
-			companyId: OldCompany._id,
+			companyID: OldCompany?._id,
 		});
 
 		device.save();
