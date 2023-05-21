@@ -17,60 +17,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
 	}
 };
 
-// export const newUser = async (req: Request, res: Response) => {
-// 	try {
-// 		const { firstName, lastName, email, password, companyName } = req.body;
-// 		if (!(firstName && lastName && email && password && companyName)) {
-// 			return res.status(400).send("All input is required");
-// 		}
-// 		if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
-// 			return res
-// 				.status(400)
-// 				.send(
-// 					"Password must contain at least 8 characters with a combination of uppercase and lowercase letters and numbers."
-// 				);
-// 		}
-// 		const oldUser = await UsersModel.findOne({ email });
-// 		const oldCompany = await CompaniesModel.findOne({ companyName });
-
-// 		if (oldUser) {
-// 			return res.status(409).send("User Already Exist. Please Login");
-// 		}
-// 		if (oldCompany === null) {
-// 			try {
-// 				const company = await CompaniesModel.create({
-// 					_id: new mongoose.Types.ObjectId(),
-// 					companyName,
-// 				});
-// 				const newCompany = await createCompany(company);
-// 				await newCompany.save();
-// 				return newCompany;
-// 			} catch (err) {
-// 				throw err;
-// 			}
-// 		}
-// 		const encryptedPassword = await bcrypt.hash(password, 10);
-// 		const user = await UsersModel.create({
-// 			_id: new mongoose.Types.ObjectId(),
-// 			firstName,
-// 			lastName,
-// 			email: email.toLowerCase(), // sanitize: convert email to lowercase
-// 			password: encryptedPassword,
-// 			companyName: companyName,
-// 		});
-// 		const token = jwt.sign({ user_id: user._id, email }, tokenKey, {
-// 			expiresIn: "2h",
-// 		});
-
-// 		user.token = token;
-// 		user.save();
-// 		const newUser = await createUser(user);
-// 		res.status(201).json(newUser);
-// 	} catch (err) {
-// 		throw err;
-// 	}
-// };
-
 export const newUser = async (req: Request, res: Response) => {
 	try {
 		const { firstName, lastName, email, password, companyName } = req.body;
