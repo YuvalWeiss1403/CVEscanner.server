@@ -80,8 +80,9 @@ export const getOldUser = async function (req: Request, res: Response) {
 	try {
 		const { email, password } = req.body;
 		if (!(email && password)) {
-			res.status(400).send("All input is required");
+			return res.status(400).send("All input is required");
 		}
+
 		const user = await UsersModel.findOne({ email });
 
 		if (user && (await bcrypt.compare(password, user.password))) {
@@ -90,9 +91,10 @@ export const getOldUser = async function (req: Request, res: Response) {
 			});
 
 			user.token = token;
-			res.status(201).json(user);
+			return res.status(201).json(user);
 		}
-		res.status(400).send("Invalid Credentials");
+
+		return res.status(400).send("Invalid Credentials");
 	} catch (err) {
 		throw err;
 	}
